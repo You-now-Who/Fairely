@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -29,12 +30,13 @@
     
     <div class="container py-5">
             
-        <h1 class='mb-4'>Demo</h1>
-    
-        <form>
+        <div class="d-flex justify-content-center">
+            <h1 class='mb-4'>Demo</h1>
+        </div>
+        <form action={{ url_for('set_url') }} method="POST">
             <div class='d-flex justify-content-center'>
                 <h4 class='text-lg-start mx-3'>URL: </h4>
-                <input type="text" class="form-control w-25" id="url" placeholder="Enter your URL"  />
+                <input type="text" class="form-control w-25" id="url" placeholder="Enter your URL" name="url"/>
             </div>
             <div class='d-flex justify-content-center my-3'>
                 <button type="submit" class="btn btn-primary mt-3" onClick={handleSubmit}>Submit</button>
@@ -43,8 +45,20 @@
                 onClick={handleSubmit}>
                     </button> */} -->
             </div>
-        </form>
+            <h1>{{complete_dict}}</h1>
+        </form> 
+
+        
         
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+    //    if (complete_dict != {})
+    //      {
+    //           console.log(complete_dict)
+    //      }
+
+    
+    </script>
 </body>
 </html>

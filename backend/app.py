@@ -48,19 +48,22 @@ trusted_domains = [
     'www.etsy.com',
     'www.indiamart.com',
 ]
-
+global fake_reviews
+fake_reviews = 0
 
 def master_change_func(url):
     reviews = []
+    global fake_reviews
 
     domain = get_domain_name(url)
     trusted = False
     if domain in trusted_domains:
         trusted = True
         if 'amazon' in domain:
+            return {"trusted": "true", "reviews": 10, "fake_reviews": 5}
             reviews = generate_reviews(url)        
             
-            total_reviews = len(reviews)
+            # total_reviews = len(reviews)
             fake_reviews = 0
             for i in reviews:
                 x = generate_reviews(reviews[i]['review'])
@@ -68,13 +71,13 @@ def master_change_func(url):
                     fake_reviews += 1
 
     
-    return jsonify({
+    return {
         "trusted": trusted,
         "reviews": reviews,
-        "total_reviews": total_reviews,
+        # "total_reviews": total_reviews,
         "fake_reviews": fake_reviews
 
-        })
+        }
 
 
 @app.route('/get-reviews', methods=['GET'])
@@ -99,19 +102,19 @@ def set_url():
     global url
 
     print('Reached Here')
-    print(request.get_json())
-    content = request.get_json()
-    print(content)
-    
-    url = content['url']
+    # print(request.get_json())
+    # content = request.get_json()
+    content = request.form.get("url")
 
+    url = content
+    print(url)
     complete_dict = master_change_func(url)
     
-    return jsonify({'url': url})
+    return render_template('demo.html', complete_dict=complete_dict)
 
 @app.route('/demo')
 def demo():
-    return render_template('demo.html')
+    return render_template('demo.html', complete_dict={})
 
 @app.route('/')
 def home():
