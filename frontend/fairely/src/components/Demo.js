@@ -25,7 +25,7 @@ export default function Demo() {
             
             <h1 className='mb-4'>Demo</h1>
 
-            <form onSubmit={handleSubmit}>
+            <form action='{{ /set-url }}' onSubmit={handleSubmit}>
                 <div className='d-flex justify-content-center'>
                     <h4 className='text-lg-start mx-3'>URL: </h4>
                     <input type="text" class="form-control w-25" id="inputPassword" placeholder="Enter your URL"/>

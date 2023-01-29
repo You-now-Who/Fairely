@@ -145,6 +145,9 @@ def generate_reviews(url):
     pd.concat([main_df, df], ignore_index=True)
     df.to_csv('amazon_review.csv')
     print(main_df)
+    
+    # df.tail(-1)
+    df = df.to_dict(orient='index')
 
     return df
 
@@ -159,4 +162,8 @@ if __name__ == "__main__":
     #     generate_reviews(url)
     #     print("Page " + str(i) + " Done")
 
-    generate_reviews(url) 
+    # print("/n/n/n/n/n")
+    a = generate_reviews(url)
+    for i in a:
+        print(a[i]['Name'])
+
