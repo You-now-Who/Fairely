@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
+import Demo from "./components/Demo";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
 	// usestate for setting a javascript
@@ -34,7 +36,15 @@ function App() {
 	return (
 		<div className="App">
       <Navbar />
-      <Home/>
+
+      <BrowserRouter>
+        <Routes>
+
+          <Route exact path="/" element={<Home />} />
+          <Route path="/demo" element={<Demo />} />
+
+        </Routes>
+      </BrowserRouter>
 		</div>
 	);
 }
