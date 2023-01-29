@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import validators
 
+global main_df
 main_df = pd.DataFrame()
   
 HEADERS = ({'User-Agent':
@@ -85,8 +86,7 @@ def rev_img(soup):
     return images
 
 def generate_reviews(url):
-
-
+    global main_df
     soup = html_code(url)
 
     cus_res = cus_data(soup)
@@ -120,8 +120,8 @@ def generate_reviews(url):
     data = {'Name': cus_res,
             'review': rev_result}
     
-    print(len(cus_res))
-    print(len(rev_result))
+    # print(len(cus_res))
+    # print(len(rev_result))
 
     # print(rev_result)
 
@@ -136,22 +136,27 @@ def generate_reviews(url):
 
     # Create DataFrame
     df = pd.DataFrame(data)
+
+    # print(df)
     
     # Save the output.
     # df.to_csv('amazon_review.csv')
-    main_df.append(df)
+    # main_df.append(df)
+    pd.concat([main_df, df], ignore_index=True)
+    df.to_csv('amazon_review.csv')
+    print(main_df)
 
     return df
 
 
 if __name__ == "__main__":
-    # url = "https://www.amazon.in/Arturia-MiniLab-Controller-Arpeggiator-Production/dp/B0BGMNKCNT/ref=sr_1_4?crid=2SVPBYDFIRJMX&keywords=arturia%2Bminilab%2B3&qid=1674977350&sprefix=arturi%2Caps%2C700&sr=8-4&th=1"
-    for i in range (1, 100000):
-        url = "https://www.amazon.in/Arturia-MiniLab-Controller-Arpeggiator-Production/product-reviews/B0BGMNKCNT/ref=cm_cr_arp_d_paging_btm_next_" + str(i) + "?ie=UTF8&reviewerType=all_reviews&pageNumber=" + str(i)
+    url = "https://www.amazon.in/Arturia-MiniLab-Controller-Arpeggiator-Production/dp/B0BGMNKCNT/ref=sr_1_4?crid=2SVPBYDFIRJMX&keywords=arturia%2Bminilab%2B3&qid=1674977350&sprefix=arturi%2Caps%2C700&sr=8-4&th=1"
+    # for i in range (1, 100000):
+    #     url = "https://www.amazon.in/Arturia-MiniLab-Controller-Arpeggiator-Production/product-reviews/B0BGMNKCNT/ref=cm_cr_arp_d_paging_btm_next_" + str(i) + "?ie=UTF8&reviewerType=all_reviews&pageNumber=" + str(i)
         
-        if not validators.url(url):
-            break
-        generate_reviews(url)
-        print("Page " + str(i) + " Done")
+    #     if not validators.url(url):
+    #         break
+    #     generate_reviews(url)
+    #     print("Page " + str(i) + " Done")
 
-    main_df.to_csv('amazon_review.csv')
+    generate_reviews(url) 
