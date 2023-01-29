@@ -1,23 +1,56 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 export default function Demo() {
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [domain, setDomain] = useState('');
+  const [content, setContent] = useState('');
 
-    fetch("/get-product-details").then((res) =>
-			res.json().then((data) => {
-				// Setting a data from api
-				setdata({
-					name: data.Name,
-					age: data.Age,
-					date: data.Date,
-					programming: data.programming,
-				});
-			})
-		);
-    console.log('Submitted');
+  const fetchData = () => {
+        fetch("/get-reviews").then((res) =>
+                res.json().then((data) => {
+                    // Setting a data from api
+                    setDomain(data.domain);
+                })
+            );
+    
+    return;
+    
+  }
+
+  
+
+   const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    let data = new FormData();
+    data.append('url', content);
+
+    const requestOptions={
+        method:"POST",
+        mode:"no-cors",
+        body:data,
+        headers:{
+            'content-type':'application/json'
+        }
     }
+
+    console.log(content)
+
+    // send a post request to the backend at /set-url
+    fetch('http://localhost:5000/set-url', requestOptions)
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+
+
+
+
+    // fetchData();
+   }
+   
+   useEffect(() => {
+     fetchData();
+   }, []);
 
   return (
     <>
@@ -25,15 +58,20 @@ export default function Demo() {
             
             <h1 className='mb-4'>Demo</h1>
 
-            <form action='{{ /set-url }}' onSubmit={handleSubmit}>
+            <form>
                 <div className='d-flex justify-content-center'>
                     <h4 className='text-lg-start mx-3'>URL: </h4>
-                    <input type="text" class="form-control w-25" id="inputPassword" placeholder="Enter your URL"/>
+                    <input type="text" className="form-control w-25" id="url" placeholder="Enter your URL" value={content} onChange={e => setContent(e.target.value)}/>
                 </div>
                 <div className='d-flex justify-content-center my-3'>
-                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    <button type="submit" className="btn btn-primary mt-3" onClick={handleSubmit}>Submit</button>
+
+                    {/* <button type="submit" value="Add Todo"
+                    onClick={handleSubmit}>
+                        </button> */}
                 </div>
             </form>
+            {/* <h1>{{domain}}</h1> */}
         </div>
     </>
   )

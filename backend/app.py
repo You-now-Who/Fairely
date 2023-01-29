@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 global url 
 url = ""
-
+global complete_dict
+complete_dict = {}
 trusted_domains = [
     'www.amazon.com',
     'www.ebay.com',
@@ -49,23 +50,7 @@ trusted_domains = [
 ]
 
 
-
-@app.route('/data')
-def get_time():
-  
-    # Returning an api for showing in  reactjs
-    return {
-        'Name':"geek", 
-        "Age":"22",
-        "Date": "12/12/2020", 
-        "programming":"python"
-        }
-
-@app.route('/set-url', methods=['POST'])
-def set_url():
-    content = request.get_json()
-    
-    url = content['url']
+def master_change_func(url):
     reviews = []
 
     domain = get_domain_name(url)
@@ -91,6 +76,46 @@ def set_url():
 
         })
 
+
+@app.route('/get-reviews', methods=['GET'])
+def get_reviews():
+    
+    return complete_dict
+
+@app.route('/data')
+def get_time():
+  
+    # Returning an api for showing in  reactjs
+    return {
+        'Name':"geek", 
+        "Age":"22",
+        "Date": "12/12/2020", 
+        "programming":"python"
+        }
+
+@app.route('/set-url', methods=['POST'])
+def set_url():
+    global complete_dict
+    global url
+
+    print('Reached Here')
+    print(request.get_json())
+    content = request.get_json()
+    print(content)
+    
+    url = content['url']
+
+    complete_dict = master_change_func(url)
+    
+    return jsonify({'url': url})
+
+@app.route('/demo')
+def demo():
+    return render_template('demo.html')
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
